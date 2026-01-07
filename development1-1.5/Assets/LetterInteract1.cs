@@ -14,9 +14,31 @@ public class LetterInteract1 : MonoBehaviour
     public float animationDuration = 0.5f;
     public float fadeDistance = 50f;
 
+    [Header("描边设置")]
+    public Color outlineColor = Color.yellow;
+    [Range(0f, 10f)]
+    public float outlineWidth = 5f;
+
     private bool isPlayerInRange = false;
     private bool isReading = false;
     private Vector2 originalPosition;
+    private Outline outline; // 内部引用描边组件
+
+    void Awake()
+    {
+        // 自动初始化描边组件
+        outline = GetComponent<Outline>();
+        if (outline == null)
+        {
+            outline = gameObject.AddComponent<Outline>();
+        }
+        
+        // 设置描边初始参数
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineColor = outlineColor;
+        outline.OutlineWidth = outlineWidth;
+        outline.enabled = false; // 初始状态关闭
+    }
 
     void Start()
     {
@@ -48,6 +70,10 @@ public class LetterInteract1 : MonoBehaviour
         Debug.Log("【系统】打开信纸界面");
         isReading = true;
         if(uiPrompt != null) uiPrompt.SetActive(false);
+        
+        // 打开信纸时关闭描边，避免UI挡住时物体还在发光
+        if (outline != null) outline.enabled = false;
+
         letterCanvasGroup.gameObject.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(FadeIn());
@@ -57,6 +83,10 @@ public class LetterInteract1 : MonoBehaviour
     {
         Debug.Log("【系统】关闭信纸界面");
         isReading = false;
+        
+        // 关闭信纸时，如果玩家还在范围内，重新开启描边
+        if (isPlayerInRange && outline != null) outline.enabled = true;
+
         StopAllCoroutines();
         StartCoroutine(FadeOut());
     }
@@ -90,19 +120,17 @@ public class LetterInteract1 : MonoBehaviour
         letterCanvasGroup.gameObject.SetActive(false);
     }
 
-    // --- 调试核心：触发检测 ---
+    // --- 触发检测 ---
     private void OnTriggerEnter(Collider other)
     {
-        // 如果控制台没出这行字，说明 Collider 没碰到玩家
         if (other.CompareTag("Player"))
         {
             Debug.Log(">>> [检测成功] 玩家进入了信纸的检测范围！");
             isPlayerInRange = true;
+            
+            // 显示提示和开启描边
             if (uiPrompt != null && !isReading) uiPrompt.SetActive(true);
-        }
-        else
-        {
-            Debug.Log(">>> [检测到碰撞] 但碰撞物体的 Tag 是: " + other.tag + "，不是 Player");
+            if (outline != null && !isReading) outline.enabled = true;
         }
     }
 
@@ -112,7 +140,11 @@ public class LetterInteract1 : MonoBehaviour
         {
             Debug.Log("<<< [检测成功] 玩家离开了信纸范围。");
             isPlayerInRange = false;
+            
+            // 隐藏提示和关闭描边
             if (uiPrompt != null) uiPrompt.SetActive(false);
+            if (outline != null) outline.enabled = false;
+            
             if (isReading) CloseLetter();
         }
     }

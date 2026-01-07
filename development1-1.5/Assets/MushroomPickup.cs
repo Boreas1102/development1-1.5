@@ -3,18 +3,37 @@ using System.Collections;
 
 public class MushroomPickup : MonoBehaviour
 {
+    [Header("UI 引用")]
     public GameObject uiPrompt;       // 之前关联的UI
+    
+    [Header("反馈设置")]
     public GameObject pickupEffect;   // 拖入你的粒子特效Prefab
     public AudioClip pickupSound;     // 拖入你的音效文件
     public float fadeDuration = 1.0f; // 消逝持续时间
 
+    [Header("描边设置")]
+    public Color outlineColor = Color.green; // 蘑菇建议用绿色或白色
+    [Range(0f, 10f)]
+    public float outlineWidth = 5f;
+
     private bool isPlayerInRange = false;
     private bool isPickedUp = false;
-    private MeshRenderer meshRenderer;
+    private Outline outline; // 内部引用描边组件
 
-    void Start()
+    void Awake()
     {
-        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        // 自动初始化描边组件
+        outline = GetComponent<Outline>();
+        if (outline == null)
+        {
+            outline = gameObject.AddComponent<Outline>();
+        }
+        
+        // 设置描边初始参数
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineColor = outlineColor;
+        outline.OutlineWidth = outlineWidth;
+        outline.enabled = false; // 初始状态关闭
     }
 
     void Update()
@@ -30,8 +49,9 @@ public class MushroomPickup : MonoBehaviour
     {
         isPickedUp = true;
         
-        // 1. 隐藏 UI 提示
+        // 1. 彻底关闭 UI 和 描边
         if (uiPrompt != null) uiPrompt.SetActive(false);
+        if (outline != null) outline.enabled = false;
 
         // 2. 播放声音
         if (pickupSound != null)
@@ -67,10 +87,14 @@ public class MushroomPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // 只有没被采摘时才触发
         if (other.CompareTag("Player") && !isPickedUp)
         {
             isPlayerInRange = true;
             if (uiPrompt != null) uiPrompt.SetActive(true);
+            
+            // --- 新增：开启描边 ---
+            if (outline != null) outline.enabled = true;
         }
     }
 
@@ -80,6 +104,9 @@ public class MushroomPickup : MonoBehaviour
         {
             isPlayerInRange = false;
             if (uiPrompt != null) uiPrompt.SetActive(false);
+            
+            // --- 新增：关闭描边 ---
+            if (outline != null) outline.enabled = false;
         }
     }
 }
