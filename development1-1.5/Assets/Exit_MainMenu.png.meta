@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -113,10 +113,10 @@ TextureImporter:
       name: Exit_MainMenu_0
       rect:
         serializedVersion: 2
-        x: 959
-        y: 116
-        width: 126
-        height: 43
+        x: 958
+        y: 63
+        width: 383
+        height: 98
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,10 +135,10 @@ TextureImporter:
       name: Exit_MainMenu_1
       rect:
         serializedVersion: 2
-        x: 1055
-        y: 99
-        width: 106
-        height: 46
+        x: 959
+        y: 63
+        width: 384
+        height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,10 +157,10 @@ TextureImporter:
       name: Exit_MainMenu_2
       rect:
         serializedVersion: 2
-        x: 1122
-        y: 85
-        width: 103
-        height: 40
+        x: 958
+        y: 66
+        width: 385
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: Exit_MainMenu_3
       rect:
         serializedVersion: 2
-        x: 1228
-        y: 70
-        width: 99
-        height: 41
+        x: 957
+        y: 66
+        width: 387
+        height: 93
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
