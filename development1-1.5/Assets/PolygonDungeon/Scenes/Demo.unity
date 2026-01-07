@@ -3170,7 +3170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3fe952507f07f48a5411522a8459d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathCountdownManager
-  remainingTime: 300
+  remainingTime: 200
   blackOverlay: {fileID: 1259037347}
   bloodFlash: {fileID: 2127835593}
   deathDialog: {fileID: 1408261936}
