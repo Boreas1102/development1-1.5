@@ -6,15 +6,13 @@ using System.Collections;
 public class LetterInteract1 : MonoBehaviour
 {
     [Header("UI 引用")]
-    public GameObject uiPrompt;           
-    public CanvasGroup letterCanvasGroup;  
-    public RectTransform letterRect;      
+    public GameObject uiPrompt;           // 提示按E的UI
+    public CanvasGroup letterCanvasGroup;  // 控制面板透明度
+    public RectTransform letterRect;      // 控制面板位置
 
     [Header("动画设置")]
     public float animationDuration = 0.5f;
     public float fadeDistance = 50f;
-
-    private Outline outline; 
 
     private bool isPlayerInRange = false;
     private bool isReading = false;
@@ -22,17 +20,15 @@ public class LetterInteract1 : MonoBehaviour
 
     void Start()
     {
-        outline = GetComponent<Outline>();
-        if (outline != null) 
-        {
-            outline.enabled = false; 
-        }
-
         if (letterCanvasGroup != null)
         {
             letterCanvasGroup.alpha = 0; 
             letterCanvasGroup.gameObject.SetActive(false);
             originalPosition = letterRect.anchoredPosition;
+        }
+        else
+        {
+            Debug.LogError("【错误】LetterCanvasGroup 未关联！请检查 Inspector 面板。");
         }
     }
 
@@ -49,9 +45,9 @@ public class LetterInteract1 : MonoBehaviour
 
     public void OpenLetter()
     {
+        Debug.Log("【系统】打开信纸界面");
         isReading = true;
         if(uiPrompt != null) uiPrompt.SetActive(false);
-        
         letterCanvasGroup.gameObject.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(FadeIn());
@@ -59,11 +55,10 @@ public class LetterInteract1 : MonoBehaviour
 
     public void CloseLetter()
     {
+        Debug.Log("【系统】关闭信纸界面");
         isReading = false;
         StopAllCoroutines();
         StartCoroutine(FadeOut());
-        
-        if (isPlayerInRange && uiPrompt != null) uiPrompt.SetActive(true);
     }
 
     IEnumerator FadeIn()
@@ -95,15 +90,19 @@ public class LetterInteract1 : MonoBehaviour
         letterCanvasGroup.gameObject.SetActive(false);
     }
 
+    // --- 调试核心：触发检测 ---
     private void OnTriggerEnter(Collider other)
     {
+        // 如果控制台没出这行字，说明 Collider 没碰到玩家
         if (other.CompareTag("Player"))
         {
+            Debug.Log(">>> [检测成功] 玩家进入了信纸的检测范围！");
             isPlayerInRange = true;
-            
-            if (outline != null) outline.enabled = true; 
-            
             if (uiPrompt != null && !isReading) uiPrompt.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(">>> [检测到碰撞] 但碰撞物体的 Tag 是: " + other.tag + "，不是 Player");
         }
     }
 
@@ -111,10 +110,8 @@ public class LetterInteract1 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("<<< [检测成功] 玩家离开了信纸范围。");
             isPlayerInRange = false;
-            
-            if (outline != null) outline.enabled = false; 
-            
             if (uiPrompt != null) uiPrompt.SetActive(false);
             if (isReading) CloseLetter();
         }
