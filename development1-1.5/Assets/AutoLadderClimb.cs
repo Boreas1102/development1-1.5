@@ -1,7 +1,7 @@
 using UnityEngine;
 using StarterAssets;
 using System.Collections;
-using TMPro; // 如果你使用的是 TextMeshPro，需要这一行
+using TMPro; 
 
 public class AutoLadderClimberWithUI : MonoBehaviour
 {
@@ -24,13 +24,11 @@ public class AutoLadderClimberWithUI : MonoBehaviour
         _animator = GetComponent<Animator>();
         _controller = GetComponent<ThirdPersonController>();
         
-        // 游戏开始时确保 UI 是隐藏的
         if (interactionUI != null) interactionUI.SetActive(false);
     }
 
     void Update()
     {
-        // 只有靠近梯子且没在爬的时候，按下 E 开始
         if (_isNearLadder && Input.GetKeyDown(KeyCode.E) && !_isClimbing)
         {
             StartCoroutine(AutoClimbRoutine());
@@ -47,15 +45,12 @@ public class AutoLadderClimberWithUI : MonoBehaviour
 
         _isClimbing = true;
         
-        // 开始爬行时隐藏 UI 提示
         if (interactionUI != null) interactionUI.SetActive(false);
 
-        // 1. 准备状态
         if (_controller != null) _controller.enabled = false;
         _animator.SetBool("IsClimbing", true);
         _animator.SetFloat("Speed", 1f);
 
-        // 2. 自动位移
         Vector3 endPos = _targetTopPoint.position;
         while (Vector3.Distance(transform.position, endPos) > 0.1f)
         {
@@ -63,7 +58,6 @@ public class AutoLadderClimberWithUI : MonoBehaviour
             yield return null; 
         }
 
-        // 3. 完成
         StopClimbing();
     }
 
@@ -75,7 +69,6 @@ public class AutoLadderClimberWithUI : MonoBehaviour
 
         if (_controller != null) _controller.enabled = true;
         
-        // 爬完后如果还在触发器内，重新显示 UI
         if (_isNearLadder && interactionUI != null) interactionUI.SetActive(true);
     }
 
@@ -86,7 +79,6 @@ public class AutoLadderClimberWithUI : MonoBehaviour
             _isNearLadder = true;
             _targetTopPoint = other.transform.Find("TopPoint");
 
-            // 显示交互 UI
             if (interactionUI != null && !_isClimbing) 
             {
                 interactionUI.SetActive(true);
@@ -100,7 +92,6 @@ public class AutoLadderClimberWithUI : MonoBehaviour
         {
             _isNearLadder = false;
             
-            // 隐藏交互 UI
             if (interactionUI != null) 
             {
                 interactionUI.SetActive(false);

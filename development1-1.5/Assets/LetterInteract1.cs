@@ -6,15 +6,14 @@ using System.Collections;
 public class LetterInteract1 : MonoBehaviour
 {
     [Header("UI 引用")]
-    public GameObject uiPrompt;           // 提示按E的UI
-    public CanvasGroup letterCanvasGroup;  // 控制面板透明度
-    public RectTransform letterRect;      // 控制面板位置
+    public GameObject uiPrompt;           
+    public CanvasGroup letterCanvasGroup;  
+    public RectTransform letterRect;      
 
     [Header("动画设置")]
     public float animationDuration = 0.5f;
     public float fadeDistance = 50f;
 
-    // 描边组件引用
     private Outline outline; 
 
     private bool isPlayerInRange = false;
@@ -23,11 +22,10 @@ public class LetterInteract1 : MonoBehaviour
 
     void Start()
     {
-        // 自动获取物体上的 Outline 组件
         outline = GetComponent<Outline>();
         if (outline != null) 
         {
-            outline.enabled = false; // 初始关闭
+            outline.enabled = false; 
         }
 
         if (letterCanvasGroup != null)
@@ -40,14 +38,12 @@ public class LetterInteract1 : MonoBehaviour
 
     void Update()
     {
-        // 按 E 键开关信件
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
             if (!isReading) OpenLetter();
             else CloseLetter();
         }
 
-        // 读信时按 Esc 也可以关闭
         if (isReading && Input.GetKeyDown(KeyCode.Escape)) CloseLetter();
     }
 
@@ -67,7 +63,6 @@ public class LetterInteract1 : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(FadeOut());
         
-        // 关闭后如果人还在范围内，重新显示 E 提示
         if (isPlayerInRange && uiPrompt != null) uiPrompt.SetActive(true);
     }
 
@@ -106,7 +101,6 @@ public class LetterInteract1 : MonoBehaviour
         {
             isPlayerInRange = true;
             
-            // 靠近显示描边
             if (outline != null) outline.enabled = true; 
             
             if (uiPrompt != null && !isReading) uiPrompt.SetActive(true);
@@ -119,7 +113,6 @@ public class LetterInteract1 : MonoBehaviour
         {
             isPlayerInRange = false;
             
-            // 离开关闭描边
             if (outline != null) outline.enabled = false; 
             
             if (uiPrompt != null) uiPrompt.SetActive(false);
