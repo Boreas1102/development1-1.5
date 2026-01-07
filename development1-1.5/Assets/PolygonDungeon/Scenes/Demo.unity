@@ -7020,8 +7020,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3457829, y: 2.169798, z: 0.6702165}
-  m_Center: {x: -0.64901674, y: 1.084899, z: 0.20800737}
+  m_Size: {x: 1.3457829, y: 2.169798, z: 1.1426038}
+  m_Center: {x: -0.64901674, y: 1.084899, z: -0.028186355}
 --- !u!114 &228388554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7037,6 +7037,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 10}
   speed: 3
   waitTime: 5
+  openSound: {fileID: 8300000, guid: 83d3743b9493b6d428108d7d8e9429c2, type: 3}
+  closeSound: {fileID: 8300000, guid: b7ff9de8293ae5942a3441e6d5a69c25, type: 3}
 --- !u!4 &228388557 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 485512, guid: dd2500919f1e4c64a9dc9604233608a2, type: 3}
@@ -35200,6 +35202,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 3, z: 0}
   speed: 2
   waitTime: 10
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
 --- !u!64 &1141258384
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -76456,6 +76460,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 3, z: 0}
   speed: 2
   waitTime: 10
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
 --- !u!54 &6982812146877643442
 Rigidbody:
   m_ObjectHideFlags: 0

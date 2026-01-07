@@ -8,6 +8,10 @@ public class CheckTrigger : MonoBehaviour
     public float speed = 2.0f;                       // 移动速度
     public float waitTime = 10.0f;                   // 停留时间
 
+    [Header("音效设置")]
+    public AudioClip openSound;  // 开门音效
+    public AudioClip closeSound; // 关门音效
+
     private Vector3 closedPosition;                  // 初始位置
     private bool isOpening = false;                  // 防止重复触发
 
@@ -35,6 +39,13 @@ public class CheckTrigger : MonoBehaviour
 
         // 1. 开门逻辑
         Debug.Log("检测到玩家，正在开门...");
+        
+        // --- 新增：播放开门音效 ---
+        if (openSound != null)
+        {
+            AudioSource.PlayClipAtPoint(openSound, transform.position);
+        }
+
         while (Vector3.Distance(transform.position, openPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, openPosition, speed * Time.deltaTime);
@@ -47,6 +58,13 @@ public class CheckTrigger : MonoBehaviour
 
         // 3. 关门逻辑
         Debug.Log("时间到，正在关门...");
+
+        // --- 新增：播放关门音效 ---
+        if (closeSound != null)
+        {
+            AudioSource.PlayClipAtPoint(closeSound, transform.position);
+        }
+
         while (Vector3.Distance(transform.position, closedPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, closedPosition, speed * Time.deltaTime);
